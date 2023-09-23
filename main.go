@@ -1,9 +1,9 @@
 package main
 
 import (
-	"Shy-algo/heap"
+	searchTree "Shy-algo/tree"
 )
 
 func main() {
-    heap.Printy()
+    searchTree.Printy()
 }
