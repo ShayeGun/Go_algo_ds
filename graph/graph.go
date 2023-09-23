@@ -42,10 +42,20 @@ func contains (v []*vertex,k int) bool{
 // }
 
 func Printy(){
-	gr := GraphList{}
-	gr.addVertex(1)
-	gr.addVertex(2)
-	gr.addVertex(4)
-	
-	gr.print()
+	// studentGrades := map[string]int{
+	// 	"John":  85,
+	// 	"Alice": 92,
+	// 	"Bob":   78,
+	// }
+	// arr := []int{
+	// 	1,3,4,
+	// }
+
+	// name := "Ali"
+
+	// if grade, ok := studentGrades[name]; ok {
+	// 	fmt.Println("Grade for", name, grade,ok)
+	// } else {
+	// 	fmt.Println("No Grade for", name, grade,ok)
+	// }
 }

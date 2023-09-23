@@ -1,9 +1,9 @@
 package main
 
 import (
-	"Shy-algo/graph"
+	"Shy-algo/heap"
 )
 
 func main() {
-    graph.Printy()
+    heap.Printy()
 }
