@@ -50,33 +50,46 @@ func (n *Node) isFullBinaryTree() bool {
 	return false
 }
 
-func (n *Node) isPrefectBinaryTree(lvl int) (int, bool) {
+func (n *Node) isPrefect(depth int, lvl int)  bool {
 	if n == nil {
-		return lvl, true
+		return  true
 	}
 	if n.lChild == nil && n.rChild == nil{
-		return lvl, true
+		return  depth == lvl
 	}
 	if n.lChild != nil && n.rChild != nil{
-		lvl += 1
-		lvlL, lChild := n.lChild.isPrefectBinaryTree(lvl)
-		lvlR, rChild := n.rChild.isPrefectBinaryTree(lvl)
-		// check if two children are same (empty || full) at the same level of the tree
-		if (lChild && rChild && lvlL == lvlR){
-			return lvl, true
-		}
+		return n.lChild.isPrefect(depth, lvl + 1) && n.rChild.isPrefect(depth, lvl + 1)
 	}
-	return lvl, false
+	return  false
+}
+
+func (n *Node) isPrefectBinaryTree() bool {
+	depth := n.depthFullBinaryTree()
+	return n.isPrefect(depth, 0)
+}
+
+func (n *Node) depthFullBinaryTree() int {
+	depth := 0
+	nc := n
+	for nc != nil {
+		depth += 1
+		nc = nc.lChild
+	}
+
+	return depth - 1
 }
 
 func Printy(){
 	node := Node{2, &Node{root:3}, &Node{root:4}}
 	// TEST for perfect tree --> returns true
-	// node.lChild = &Node{5, &Node{root:6}, &Node{root:7}}
-	// node.rChild = &Node{5, &Node{root:6}, &Node{root:7}}
+	node.lChild = &Node{5, &Node{root:6}, &Node{root:7}}
+	node.rChild = &Node{5, &Node{root:6}, &Node{root:7}}
+	node.lChild.lChild = &Node{5, &Node{root:6}, &Node{root:7}}
+	node.lChild.rChild= &Node{5, &Node{root:6}, &Node{root:7}}
+
 
 	// TEST for full tree
 	// node.lChild.lChild = &Node{root:5,rChild: &Node{root:6}}
 	// node.rChild.rChild = &Node{7,&Node{root:8}, &Node{root:9}}
-	fmt.Println(node.isPrefectBinaryTree(0))
+	fmt.Println(node.isPrefectBinaryTree())
 }
