@@ -72,10 +72,23 @@ func (h *Heap) delete() int {
 	return pop
 }
 
+func (h *Heap) sort() []int{
+	length := len(h.arr)
+	sortedArr := make([]int, length)
+	for i := length - 1; i >= 0; i--{
+		pop := h.delete()
+		sortedArr[i] = pop
+	}
+
+	return sortedArr
+}
+
 func Printy(){
 	h := Heap{arr: []int{}}
 	h.BuildHeapify([]int{2,1,6,5,3,4,7})
 	h.insert(8)
-	h.delete()
+	fmt.Println(h.arr)
+	sort := h.sort()
+	fmt.Println(sort)
 	fmt.Println(h.arr)
 }
