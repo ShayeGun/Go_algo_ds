@@ -1,4 +1,4 @@
-package searchTree
+package binaryTree
 
 import (
 	"fmt"
@@ -37,7 +37,7 @@ func (n *Node) postOrder () {
 	fmt.Printf("%d ---> ",n.root)
 }
 
-func (n *Node) isFullBinaryTree() bool {
+func (n *Node) isFullTree() bool {
 	if n == nil {
 		return true
 	}
@@ -45,7 +45,7 @@ func (n *Node) isFullBinaryTree() bool {
 		return true
 	}
 	if n.lChild != nil && n.rChild != nil{
-		return (n.lChild.isFullBinaryTree() && n.rChild.isFullBinaryTree())
+		return (n.lChild.isFullTree() && n.rChild.isFullTree())
 	}
 	return false
 }
@@ -63,12 +63,12 @@ func (n *Node) isPrefect(depth int, lvl int)  bool {
 	return  false
 }
 
-func (n *Node) isPrefectBinaryTree() bool {
-	depth := n.depthFullBinaryTree()
+func (n *Node) isPrefectTree() bool {
+	depth := n.depthFullTree()
 	return n.isPrefect(depth, 0)
 }
 
-func (n *Node) depthFullBinaryTree() int {
+func (n *Node) depthFullTree() int {
 	depth := 0
 	nc := n
 	for nc != nil {
@@ -79,16 +79,16 @@ func (n *Node) depthFullBinaryTree() int {
 	return depth - 1
 }
 
-func (n *Node) isCompleteBinaryTree(index int, numNodes int) bool {
+func (n *Node) isCompleteTree(index int, numNodes int) bool {
 	if n == nil {
 		return true
 	}
-	// for complete binary tree we consider that the tree is complete until it shows that it is not -->
-	// --> we can realize this by comparing it to an array indexes cuz we can show complete binary trees in array form n, n*2+1, n*2+2
+	// for complete tree we consider that the tree is complete until it shows that it is not -->
+	// --> we can realize this by comparing it to an array indexes cuz we can show complete trees in array form n, n*2+1, n*2+2
 	if index > numNodes {
 		return false
 	}
-	return n.lChild.isCompleteBinaryTree(index * 2 + 1, numNodes) && n.rChild.isCompleteBinaryTree(index * 2 + 2, numNodes)
+	return n.lChild.isCompleteTree(index * 2 + 1, numNodes) && n.rChild.isCompleteTree(index * 2 + 2, numNodes)
 }
 
 func (n *Node) nodeCount() int {
@@ -110,5 +110,5 @@ func Printy(){
 	// TEST for full tree
 	// node.lChild.lChild = &Node{root:5,rChild: &Node{root:6}}
 	// node.rChild.rChild = &Node{7,&Node{root:8}, &Node{root:9}}
-	fmt.Println(node.isCompleteBinaryTree(0,node.nodeCount()))
+	fmt.Println(node.isCompleteTree(0,node.nodeCount()))
 }

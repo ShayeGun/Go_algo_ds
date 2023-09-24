@@ -1,9 +1,9 @@
 package main
 
 import (
-	searchTree "Shy-algo/tree"
+	binaryTree "Shy-algo/tree/binary"
 )
 
 func main() {
-    searchTree.Printy()
+    binaryTree.Printy()
 }
