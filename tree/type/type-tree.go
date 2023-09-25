@@ -1,4 +1,4 @@
-package binaryTree
+package typeTree
 
 import (
 	"fmt"
@@ -8,33 +8,6 @@ type Node struct{
 	root int
 	lChild *Node
 	rChild *Node
-}
-
-func (n *Node) inOrder () {
-	if n == nil {
-		return
-	}
-	n.lChild.inOrder()
-	fmt.Printf("%d ---> ",n.root)
-	n.rChild.inOrder()
-}
-
-func (n *Node) preOrder () {
-	if n == nil {
-		return
-	}
-	fmt.Printf("%d ---> ",n.root)
-	n.lChild.preOrder()
-	n.rChild.preOrder()
-}
-
-func (n *Node) postOrder () {
-	if n == nil {
-		return
-	}
-	n.lChild.postOrder()
-	n.rChild.postOrder()
-	fmt.Printf("%d ---> ",n.root)
 }
 
 func (n *Node) isFullTree() bool {
@@ -97,6 +70,19 @@ func (n *Node) nodeCount() int {
 	}
 	return (1 + n.lChild.nodeCount() + n.rChild.nodeCount()) 
 }
+
+func (n *Node) isBalancedTree(index int, numNodes int) bool {
+	if n == nil {
+		return true
+	}
+	// for complete tree we consider that the tree is complete until it shows that it is not -->
+	// --> we can realize this by comparing it to an array indexes cuz we can show complete trees in array form n, n*2+1, n*2+2
+	if index > numNodes {
+		return false
+	}
+	return n.lChild.isCompleteTree(index * 2 + 1, numNodes) && n.rChild.isCompleteTree(index * 2 + 2, numNodes)
+}
+
 
 func Printy(){
 	node := Node{2, &Node{root:3}, &Node{root:4}}
