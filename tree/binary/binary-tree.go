@@ -66,7 +66,8 @@ func (n *Node) deleteNode(value int) {
 			return
 		}
 		// node with 2 child nodes
-		childNode := node.inOrderPredecessor()
+		// childNode := node.inOrderPredecessor()
+		childNode := node.inOrderSuccessor()
 		node.swapAndDelete(childNode)
 	}
 }
@@ -81,6 +82,17 @@ func (n *Node) inOrderPredecessor() *Node {
 	if newRoot != nil {
 		for newRoot.rNode != nil {
 			newRoot = newRoot.rNode
+		}
+	}
+
+	return newRoot
+}
+
+func (n *Node) inOrderSuccessor() *Node {
+	newRoot := n.rNode
+	if newRoot != nil {
+		for newRoot.lNode != nil {
+			newRoot = newRoot.lNode
 		}
 	}
 
