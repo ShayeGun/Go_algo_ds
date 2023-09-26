@@ -71,21 +71,29 @@ func (n *Node) nodeCount() int {
 	return (1 + n.lChild.nodeCount() + n.rChild.nodeCount()) 
 }
 
-func (n *Node) isBalancedTree(index int, numNodes int) bool {
+func (n *Node) isBalancedTree(height int) (bool, int) {
 	if n == nil {
-		return true
+		return true, height
 	}
-	// for complete tree we consider that the tree is complete until it shows that it is not -->
-	// --> we can realize this by comparing it to an array indexes cuz we can show complete trees in array form n, n*2+1, n*2+2
-	if index > numNodes {
-		return false
+	lStatus,lHeight  := n.lChild.isBalancedTree(height + 1)
+	rStatus,rHeight := n.rChild.isBalancedTree(height + 1)
+	var df int
+
+	if lStatus && rStatus {
+		df = lHeight - rHeight
+		if df == -1 || df == 0 || df == 1{
+			height = max(lHeight, rHeight)
+			return true, height
+		}
 	}
-	return n.lChild.isCompleteTree(index * 2 + 1, numNodes) && n.rChild.isCompleteTree(index * 2 + 2, numNodes)
+	
+	return false, -1;
+	
 }
 
 
 func Printy(){
-	node := Node{2, &Node{root:3}, &Node{root:4}}
+	node := Node{root:1, lChild: &Node{root:2}, rChild: &Node{root:3}}
 	// TEST for perfect tree --> returns true
 	// node.lChild = &Node{5, &Node{root:6}, &Node{root:7}}
 	// node.rChild = &Node{5, &Node{root:6}, &Node{root:7}}
@@ -94,7 +102,7 @@ func Printy(){
 
 
 	// TEST for full tree
-	// node.lChild.lChild = &Node{root:5,rChild: &Node{root:6}}
+	// node.lChild.lChild = &Node{4,&Node{root:5}, &Node{root:6}}
 	// node.rChild.rChild = &Node{7,&Node{root:8}, &Node{root:9}}
-	fmt.Println(node.isCompleteTree(0,node.nodeCount()))
+	fmt.Println(node.isBalancedTree(0))
 }
