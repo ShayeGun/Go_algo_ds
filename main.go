@@ -1,9 +1,9 @@
 package main
 
 import (
-	typeTree "Shy-algo/tree/type"
+	avlTree "Shy-algo/tree/avl"
 )
 
 func main() {
-    typeTree.Printy()
+    avlTree.Printy()
 }
