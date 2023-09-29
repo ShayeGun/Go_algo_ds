@@ -16,7 +16,7 @@ func (n *Node) getHeight() int{
 		return 0
 	}
 
-	return n.getHeight()
+	return n.height
 }
 
 func (n *Node) rightRotation() *Node{
@@ -24,9 +24,9 @@ func (n *Node) rightRotation() *Node{
 	temp := x.rChild
 	x.rChild = n
 	n.lChild = temp
+	n.height = max(n.lChild.getHeight(), n.rChild.getHeight())
 	x.height = max(x.lChild.getHeight(), x.rChild.getHeight()) + 1
-	n.height = max(n.lChild.getHeight(), n.rChild.getHeight()) + 1
-
+	*n = *x
 	return x
 }
 
@@ -34,11 +34,10 @@ func (n *Node) leftRotation() *Node{
 	x := n.rChild
 	temp := x.lChild
 	x.lChild = n
-	n.rChild = temp
-	// WHY +1 ???  CAN'T UNDERSTAND THE REASON BEHIND IT -_- 
+	n.rChild = temp 
+	n.height = max(n.lChild.getHeight(), n.rChild.getHeight())
 	x.height = max(x.lChild.getHeight(), x.rChild.getHeight()) + 1
-	n.height = max(n.lChild.getHeight(), n.rChild.getHeight()) + 1
-
+	*n = *x
 	return x
 }
 
@@ -79,7 +78,7 @@ func (n *Node) insertNode(value int) *Node {
 		if value < n.lChild.root {
 			return  n.rightRotation()
 		} else if value > n.lChild.root {
-			n.lChild = n.leftRotation()
+			n.lChild.leftRotation()
 			return n.rightRotation()
 		}
 	}
@@ -88,19 +87,23 @@ func (n *Node) insertNode(value int) *Node {
 		if value > n.rChild.root {
 			return  n.leftRotation()
 		} else if value < n.rChild.root {
-			n.rChild = n.rightRotation()
-			return n.leftRotation()
+			n.rChild.rightRotation()
+			n.leftRotation()
+			return n
 		}
 	}
 
 	return n
 }
 
+// TODO: THERE IS A PROBLEM WITH HEIGHT IT'S WORKING BUT MY GUTS SAYS IT HAS SOME PROBLEMS :| 
 func Printy(){
-	node := Node{}
-	node.insertNode(1)
-	node.insertNode(2)
+	node := &Node{}
+	node.insertNode(4)
+	node.insertNode(5)
 	node.insertNode(3)
+	node.insertNode(2)
+	node.insertNode(1)
 
-	fmt.Println(node)
+	fmt.Println(node.lChild)
 }
