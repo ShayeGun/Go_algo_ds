@@ -109,9 +109,9 @@ func (n *Node) deleteNode(value int) *Node {
 		return nil
 	}
 	if value > n.root {
-		n.rChild.deleteNode(value)
+		n.rChild = n.rChild.deleteNode(value)
 	} else if value < n.root {
-		n.lChild.deleteNode(value)
+		n.lChild = n.lChild.deleteNode(value)
 	} else {
 		if n.lChild == nil || n.rChild == nil {
 			var temp *Node
@@ -122,31 +122,33 @@ func (n *Node) deleteNode(value int) *Node {
 			}
 			// IF BOTH NODES WERE NIL
 			if temp == nil {
-				temp = n
 				n = nil
 			} else {
 				n = temp
+				fmt.Println(n)
 			}
 		} else {
-			temp := n.nodeWithMinimumValue()
+			temp := n.rChild.nodeWithMinimumValue()
 			n.root = temp.root
-			n.rChild.deleteNode(temp.root)
+			n.rChild = n.rChild.deleteNode(temp.root)
 		}
 		if n == nil {
 			return nil
 		}
 	}
+
 	return n
 }
 
 // TODO: THERE IS A PROBLEM WITH HEIGHT IT'S WORKING BUT MY GUTS SAYS IT HAS SOME PROBLEMS :|
 func Printy() {
 	node := &Node{}
-	node.insertNode(4)
-	node.insertNode(5)
-	node.insertNode(3)
-	node.insertNode(2)
+	// node.insertNode(4)
+	// node.insertNode(5)
 	node.insertNode(1)
+	node.insertNode(2)
+	node.insertNode(3)
+	node = node.deleteNode(2)
 
-	fmt.Println(node.lChild.lChild)
+	fmt.Println(node)
 }
