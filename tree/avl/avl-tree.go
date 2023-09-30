@@ -124,6 +124,8 @@ func (n *Node) deleteNode(value int) *Node {
 			if temp == nil {
 				temp = n
 				n = nil
+			} else {
+				n = temp
 			}
 		} else {
 			temp := n.nodeWithMinimumValue()
@@ -146,5 +148,5 @@ func Printy() {
 	node.insertNode(2)
 	node.insertNode(1)
 
-	fmt.Println(node.lChild)
+	fmt.Println(node.lChild.lChild)
 }
