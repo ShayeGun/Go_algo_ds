@@ -26,7 +26,7 @@ func (n *Node) rightRotation() *Node {
 	n.lChild = temp
 	n.height = max(n.lChild.getHeight(), n.rChild.getHeight())
 	x.height = max(x.lChild.getHeight(), x.rChild.getHeight()) + 1
-	*n = *x
+	n = x
 	return x
 }
 
@@ -37,7 +37,7 @@ func (n *Node) leftRotation() *Node {
 	n.rChild = temp
 	n.height = max(n.lChild.getHeight(), n.rChild.getHeight())
 	x.height = max(x.lChild.getHeight(), x.rChild.getHeight()) + 1
-	*n = *x
+	n = x
 	return x
 }
 
@@ -76,19 +76,22 @@ func (n *Node) insertNode(value int) *Node {
 	bf := n.getBalance()
 	if bf > 1 {
 		if value < n.lChild.root {
-			return n.rightRotation()
+			n = n.rightRotation()
+			return n
 		} else if value > n.lChild.root {
-			n.lChild.leftRotation()
-			return n.rightRotation()
+			n = n.lChild.leftRotation()
+			n = n.rightRotation()
+			return n
 		}
 	}
 
 	if bf < -1 {
 		if value > n.rChild.root {
-			return n.leftRotation()
+			n = n.leftRotation()
+			return n
 		} else if value < n.rChild.root {
-			n.rChild.rightRotation()
-			n.leftRotation()
+			 n = n.rChild.rightRotation()
+			 n = n.leftRotation()
 			return n
 		}
 	}
@@ -124,7 +127,7 @@ func (n *Node) deleteNode(value int) *Node {
 			if temp == nil {
 				n = nil
 			} else {
-				n = temp
+				*n = *temp
 				fmt.Println(n)
 			}
 		} else {
@@ -136,7 +139,33 @@ func (n *Node) deleteNode(value int) *Node {
 			return nil
 		}
 	}
+	// Update the balance factor of each node
+	// And, balance the tree
+	n.height = max(n.lChild.getHeight(), n.rChild.getHeight()) + 1
 
+	// bf = balance factor
+	bf := n.getBalance()
+	if bf > 1 {
+		if value < n.lChild.root {
+			n = n.rightRotation()
+			return n
+		} else if value > n.lChild.root {
+			n = n.lChild.leftRotation()
+			n = n.rightRotation()
+			return n
+		}
+	}
+
+	if bf < -1 {
+		if value > n.rChild.root {
+			n = n.leftRotation()
+			return n
+		} else if value < n.rChild.root {
+			 n = n.rChild.rightRotation()
+			 n = n.leftRotation()
+			return n
+		}
+	}
 	return n
 }
 
@@ -145,10 +174,10 @@ func Printy() {
 	node := &Node{}
 	// node.insertNode(4)
 	// node.insertNode(5)
-	node.insertNode(1)
-	node.insertNode(2)
-	node.insertNode(3)
+	node = node.insertNode(1)
+	node = node.insertNode(2)
+	node = node.insertNode(3)
 	node = node.deleteNode(2)
 
-	fmt.Println(node)
+	fmt.Println(node.rChild)
 }
