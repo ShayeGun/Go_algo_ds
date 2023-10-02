@@ -128,7 +128,6 @@ func (n *Node) deleteNode(value int) *Node {
 				n = nil
 			} else {
 				*n = *temp
-				fmt.Println(n)
 			}
 		} else {
 			temp := n.rChild.nodeWithMinimumValue()
@@ -150,7 +149,8 @@ func (n *Node) deleteNode(value int) *Node {
 			n = n.rightRotation()
 			return n
 		} else if value > n.lChild.root {
-			n = n.lChild.leftRotation()
+			// fmt.Printf("\n================\n")
+			// n.lChild = n.lChild.leftRotation()
 			n = n.rightRotation()
 			return n
 		}
@@ -161,7 +161,7 @@ func (n *Node) deleteNode(value int) *Node {
 			n = n.leftRotation()
 			return n
 		} else if value < n.rChild.root {
-			n = n.rChild.rightRotation()
+			// n.rChild = n.rChild.rightRotation()
 			n = n.leftRotation()
 			return n
 		}
@@ -170,15 +170,17 @@ func (n *Node) deleteNode(value int) *Node {
 }
 
 // TODO: THERE IS A PROBLEM WITH HEIGHT IT'S WORKING BUT MY GUTS SAYS IT HAS SOME PROBLEMS :|
+// BUT CAN'T UNDERSTAND REASON BEHIND +1 IN IT
+
 func Printy() {
 	node := &Node{}
-	node = node.insertNode(4)
 	node = node.insertNode(5)
+	node = node.insertNode(4)
 	node = node.insertNode(1)
 	node = node.insertNode(2)
 	node = node.insertNode(3)
-	node = node.deleteNode(2)
+	node = node.deleteNode(3)
 	node = node.deleteNode(5)
 
-	fmt.Println(node.lChild.lChild)
+	fmt.Println(node.lChild)
 }
