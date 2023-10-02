@@ -24,7 +24,7 @@ func (n *Node) rightRotation() *Node {
 	temp := x.rChild
 	x.rChild = n
 	n.lChild = temp
-	n.height = max(n.lChild.getHeight(), n.rChild.getHeight())
+	n.height = max(n.lChild.getHeight(), n.rChild.getHeight()) + 1
 	x.height = max(x.lChild.getHeight(), x.rChild.getHeight()) + 1
 	n = x
 	return x
@@ -35,7 +35,7 @@ func (n *Node) leftRotation() *Node {
 	temp := x.lChild
 	x.lChild = n
 	n.rChild = temp
-	n.height = max(n.lChild.getHeight(), n.rChild.getHeight())
+	n.height = max(n.lChild.getHeight(), n.rChild.getHeight()) + 1
 	x.height = max(x.lChild.getHeight(), x.rChild.getHeight()) + 1
 	n = x
 	return x
@@ -57,13 +57,13 @@ func (n *Node) insertNode(value int) *Node {
 		if n.lChild == nil {
 			n.lChild = &Node{}
 		}
-		n.lChild.insertNode(value)
+		n.lChild = n.lChild.insertNode(value)
 
 	} else if value > n.root {
 		if n.rChild == nil {
 			n.rChild = &Node{}
 		}
-		n.rChild.insertNode(value)
+		n.rChild = n.rChild.insertNode(value)
 
 	} else {
 		return n
@@ -90,8 +90,8 @@ func (n *Node) insertNode(value int) *Node {
 			n = n.leftRotation()
 			return n
 		} else if value < n.rChild.root {
-			 n = n.rChild.rightRotation()
-			 n = n.leftRotation()
+			n = n.rChild.rightRotation()
+			n = n.leftRotation()
 			return n
 		}
 	}
@@ -161,8 +161,8 @@ func (n *Node) deleteNode(value int) *Node {
 			n = n.leftRotation()
 			return n
 		} else if value < n.rChild.root {
-			 n = n.rChild.rightRotation()
-			 n = n.leftRotation()
+			n = n.rChild.rightRotation()
+			n = n.leftRotation()
 			return n
 		}
 	}
@@ -172,12 +172,13 @@ func (n *Node) deleteNode(value int) *Node {
 // TODO: THERE IS A PROBLEM WITH HEIGHT IT'S WORKING BUT MY GUTS SAYS IT HAS SOME PROBLEMS :|
 func Printy() {
 	node := &Node{}
-	// node.insertNode(4)
-	// node.insertNode(5)
+	node = node.insertNode(4)
+	node = node.insertNode(5)
 	node = node.insertNode(1)
 	node = node.insertNode(2)
 	node = node.insertNode(3)
 	node = node.deleteNode(2)
+	node = node.deleteNode(5)
 
-	fmt.Println(node.rChild)
+	fmt.Println(node.lChild.lChild)
 }
