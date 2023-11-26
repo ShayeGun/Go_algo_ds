@@ -1,9 +1,9 @@
 package main
 
 import (
-	avlTree "Shy-algo/tree/avl"
+	graph "Shy-algo/graph"
 )
 
 func main() {
-    avlTree.Printy()
+	graph.Printy()
 }
