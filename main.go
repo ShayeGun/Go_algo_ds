@@ -1,9 +1,9 @@
 package main
 
 import (
-	graph "Shy-algo/graph"
+	dynamic "Shy-algo/dynamic-programming"
 )
 
 func main() {
-	graph.Printy()
+	dynamic.Printy()
 }
