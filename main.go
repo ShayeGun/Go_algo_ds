@@ -1,9 +1,9 @@
 package main
 
 import (
-	dynamic "Shy-algo/dynamic-programming"
+	greedy "Shy-algo/greedy-algorithms"
 )
 
 func main() {
-	dynamic.Printy()
+	greedy.Printy()
 }
