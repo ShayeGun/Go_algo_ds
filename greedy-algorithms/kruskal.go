@@ -22,6 +22,11 @@ func (g *Graph) addEdge(e Edge) *Graph {
 }
 
 func find(a int, parent []int) int {
+	/*
+		negative sign means that vertex is root and the negative number is number of children vertices of that vertex
+		for example [-2,0,0,-1] means vertex 0 is parent of 2 vertices (1,2) and vertex 3 is a single vertex (-1)
+	*/
+	// in this kind of representation we cluster vertices and show it by a representative vertex (root vertex like 0)
 	for parent[a] >= 0 {
 		a = parent[a]
 	}
@@ -32,10 +37,12 @@ func union(a, b int, parent []int) bool {
 	p1 := find(a, parent)
 	p2 := find(b, parent)
 
+	// if parent of two vertices are same which means there is a cycle
 	if p1 == p2 {
 		return true
 	}
 
+	// vertex with more children must be root
 	if parent[p1] <= parent[p2] {
 		parent[p1] += parent[p2]
 		parent[p2] = p1
