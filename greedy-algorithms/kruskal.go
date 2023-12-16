@@ -1,7 +1,6 @@
 package greedy
 
 import (
-	"fmt"
 	"sort"
 )
 
@@ -77,20 +76,5 @@ func kruskal(graph *Graph) ([]Edge, int) {
 	}
 
 	return result, cost
-
-}
-
-func Printy() {
-	g := &Graph{}
-
-	g.vertices = 5
-	g.addEdge(Edge{2, 0, 2})
-	g.addEdge(Edge{6, 0, 3})
-	g.addEdge(Edge{5, 1, 2})
-	g.addEdge(Edge{1, 1, 4})
-	g.addEdge(Edge{2, 2, 3})
-	g.addEdge(Edge{3, 3, 4})
-
-	fmt.Println(kruskal(g))
 
 }
