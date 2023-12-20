@@ -12,9 +12,10 @@ type HuffmanTableElements struct {
 }
 
 type HuffmanNode struct {
-	char  rune
-	left  *HuffmanNode
-	right *HuffmanNode
+	char      rune
+	frequency int
+	left      *HuffmanNode
+	right     *HuffmanNode
 }
 
 func createTable(str string) []HuffmanTableElements {
@@ -50,20 +51,64 @@ func createTable(str string) []HuffmanTableElements {
 }
 
 func createHuffmanTree(table []HuffmanTableElements) HuffmanNode {
-	tree := HuffmanNode{}
+	// create a base array tree from table
+	var copyTree []HuffmanNode
+	for i := range table {
+		copyTree = append(copyTree, HuffmanNode{frequency: table[i].frequency, char: table[i].char})
+	}
 
-	for _, v := range table {
-		binaryCode := v.code
-		for i := range binaryCode {
-			if binaryCode[i] == '0' {
-			} else {
-			}
+	for len(copyTree) != 1 {
+		var tempParentTree []HuffmanNode
+		for i := 0; i < len(copyTree); i = i + 2 {
+			tempParentTree = append(
+				tempParentTree,
+				HuffmanNode{
+					frequency: copyTree[i].frequency + copyTree[i+1].frequency,
+					left:      &copyTree[i],
+					right:     &copyTree[i+1]})
+		}
+		copyTree = tempParentTree
+	}
+
+	return copyTree[0]
+}
+
+func decodeHuffman(str string, start HuffmanNode) string {
+	if len(str) == 0 {
+		return "ERROR"
+	}
+
+	if start.left == nil && start.right == nil {
+		return "ERROR"
+	}
+
+	temp := start
+	result := ""
+
+	for len(str) > 0 {
+		bit := str[0]
+		str = str[1:]
+		if bit == '0' {
+			temp = *temp.left
+		} else if bit == '1' {
+			temp = *temp.right
+		} else {
+			return "ERROR"
+		}
+
+		if temp.left == nil && temp.right == nil {
+			result += string(temp.char)
+			temp = start
 		}
 	}
 
-	return tree
+	return result
 }
 
+// TODO: fix createTable for odd number of elements
+
 func Printy() {
+	table := createTable("salam")
 	fmt.Println(createTable("salam"))
+	fmt.Println(decodeHuffman("000111", createHuffmanTree(table)))
 }
