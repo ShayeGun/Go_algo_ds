@@ -50,7 +50,7 @@ func createTable(str string) []HuffmanTableElements {
 	return result
 }
 
-func createHuffmanTree(table []HuffmanTableElements) HuffmanNode {
+func createHuffmanTree(table []HuffmanTableElements) *HuffmanNode {
 	// create a base array tree from table
 	var copyTree []HuffmanNode
 	for i := range table {
@@ -59,6 +59,11 @@ func createHuffmanTree(table []HuffmanTableElements) HuffmanNode {
 
 	for len(copyTree) != 1 {
 		var tempParentTree []HuffmanNode
+
+		if len(copyTree)%2 != 0 {
+			copyTree = append(copyTree, HuffmanNode{})
+		}
+
 		for i := 0; i < len(copyTree); i = i + 2 {
 			tempParentTree = append(
 				tempParentTree,
@@ -70,10 +75,41 @@ func createHuffmanTree(table []HuffmanTableElements) HuffmanNode {
 		copyTree = tempParentTree
 	}
 
-	return copyTree[0]
+	return &copyTree[0]
 }
 
-func decodeHuffman(str string, start HuffmanNode) string {
+func printHuffmanTree(node *HuffmanNode, depth int, isRight bool, prefix string) {
+	if node == nil {
+		return
+	}
+
+	if depth > 0 {
+		var connector string
+		if isRight {
+			connector = " └── "
+		} else {
+			connector = " ├── "
+		}
+		fmt.Printf("%s%s", prefix, connector)
+	}
+
+	fmt.Printf("%c%d\n", node.char, node.frequency)
+
+	// Adjust the spacing for child nodes
+	newPrefix := prefix
+	if depth > 0 {
+		if isRight {
+			newPrefix += "     "
+		} else {
+			newPrefix += " │   "
+		}
+	}
+
+	printHuffmanTree(node.left, depth+1, false, newPrefix)
+	printHuffmanTree(node.right, depth+1, true, newPrefix)
+}
+
+func decodeHuffman(str string, start *HuffmanNode) string {
 	if len(str) == 0 {
 		return "ERROR"
 	}
@@ -89,9 +125,9 @@ func decodeHuffman(str string, start HuffmanNode) string {
 		bit := str[0]
 		str = str[1:]
 		if bit == '0' {
-			temp = *temp.left
+			temp = temp.left
 		} else if bit == '1' {
-			temp = *temp.right
+			temp = temp.right
 		} else {
 			return "ERROR"
 		}
@@ -108,7 +144,8 @@ func decodeHuffman(str string, start HuffmanNode) string {
 // TODO: fix createTable for odd number of elements
 
 func Printy() {
-	table := createTable("salam")
-	fmt.Println(createTable("salam"))
-	fmt.Println(decodeHuffman("000111", createHuffmanTree(table)))
+	table := createTable("salamB")
+	printHuffmanTree(createHuffmanTree(table), 0, false, "")
+	fmt.Println(createTable("salamB"))
+	fmt.Println(decodeHuffman("000010", createHuffmanTree(table)))
 }
