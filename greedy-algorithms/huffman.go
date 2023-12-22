@@ -5,6 +5,7 @@ import (
 	"sort"
 )
 
+// maybe not the best structs to be used for huffman algo ?o_O?
 type HuffmanTableElements struct {
 	char      rune
 	frequency int
@@ -18,10 +19,11 @@ type HuffmanNode struct {
 	right     *HuffmanNode
 }
 
-func createTable(str string) []HuffmanTableElements {
+func createSortedElementsSlice(str string) []HuffmanTableElements {
 	table := make(map[rune]int)
 	result := make([]HuffmanTableElements, 0, len(str))
 
+	// count each letter in string
 	for _, i := range str {
 		if _, ok := table[i]; ok {
 			table[i] += 1
@@ -51,7 +53,7 @@ func createTable(str string) []HuffmanTableElements {
 }
 
 func createHuffmanTree(table []HuffmanTableElements) *HuffmanNode {
-	// create a base array tree from table
+	// create a copy of the slice (SLICE MUST BE SORTED)
 	var copyTree []HuffmanNode
 	for i := range table {
 		copyTree = append(copyTree, HuffmanNode{frequency: table[i].frequency, char: table[i].char})
@@ -60,10 +62,20 @@ func createHuffmanTree(table []HuffmanTableElements) *HuffmanNode {
 	for len(copyTree) != 1 {
 		var tempParentTree []HuffmanNode
 
+		/*
+		* because we assume the always will be even number of elements in slice (i, i+1)
+		* we append slice with an empty node if the number of nodes are odd
+		* so wouldn't get an error
+		 */
 		if len(copyTree)%2 != 0 {
 			copyTree = append(copyTree, HuffmanNode{})
 		}
 
+		/*
+		* this tree creation is a bottom to top approach in each iteration we combine 2
+		* nodes into single node and push it into new slice and continue this iterations
+		* until there is only one node which is the root node
+		 */
 		for i := 0; i < len(copyTree); i = i + 2 {
 			tempParentTree = append(
 				tempParentTree,
@@ -121,6 +133,11 @@ func decodeHuffman(str string, start *HuffmanNode) string {
 	temp := start
 	result := ""
 
+	/*
+	* because this is greedy algorithm in each iteration we assume that our traverse is
+	* correct and if bit is 0 we go to left child if its 1 we traverse to right repeat
+	* till we are at leaf node and print the letter then reset pointer to the root node
+	 */
 	for len(str) > 0 {
 		bit := str[0]
 		str = str[1:]
@@ -141,11 +158,9 @@ func decodeHuffman(str string, start *HuffmanNode) string {
 	return result
 }
 
-// TODO: fix createTable for odd number of elements
-
 func Printy() {
-	table := createTable("salamB")
+	table := createSortedElementsSlice("salamB")
 	printHuffmanTree(createHuffmanTree(table), 0, false, "")
-	fmt.Println(createTable("salamB"))
+	fmt.Println(createSortedElementsSlice("salamB"))
 	fmt.Println(decodeHuffman("000010", createHuffmanTree(table)))
 }
